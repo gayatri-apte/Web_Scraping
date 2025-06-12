@@ -4,15 +4,18 @@ import pandas as pd
 import random
 import time
 
+# Define headers to mimic a real browser request
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Accept-Language": "en-US,en;q=0.9",
 }
 
+# Target URL
 URL ="https://books.toscrape.com/"
 
 products=[]
 
+# Send GET request to the website
 response = requests.get(URL, headers=HEADERS, timeout=10)
 
 if response.status_code==200:
@@ -45,10 +48,13 @@ if response.status_code==200:
             }
         )
 
+        # Add delay to avoid overwhelming the server
         time.sleep(random.uniform(0.5, 1.5))
 
 else:
     print("Failed to connect to books website.",response.status_code)
+    
+# Save data to CSV
 df=pd.DataFrame(products)
 df.to_csv("books_info.csv", index=False, encoding="utf-8")
 print("Scraped",len(products),"products saved to csv file")
